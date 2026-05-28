@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 import '../database/dao/book_dao.dart';
 import '../database/dao/section_dao.dart';
@@ -26,10 +27,8 @@ class ExportService {
     buffer.writeln(chapter.content);
     await file.writeAsString(buffer.toString());
 
-    if (context.mounted) {
-      await Share.shareXFiles([XFile(file.path)],
-          text: '${chapter.title} - 墨匣');
-    }
+    await Share.shareXFiles([XFile(file.path)],
+        text: '${chapter.title} - 墨匣');
   }
 
   Future<void> exportSection(
@@ -54,10 +53,8 @@ class ExportService {
 
     await file.writeAsString(buffer.toString());
 
-    if (context.mounted) {
-      await Share.shareXFiles([XFile(file.path)],
-          text: '${section.title} - 墨匣');
-    }
+    await Share.shareXFiles([XFile(file.path)],
+        text: '${section.title} - 墨匣');
   }
 
   Future<void> exportBook(Book book, BuildContext context) async {
@@ -94,9 +91,7 @@ class ExportService {
 
     await file.writeAsString(buffer.toString());
 
-    if (context.mounted) {
-      await Share.shareXFiles([XFile(file.path)],
-          text: '${book.title} - 墨匣');
-    }
+    await Share.shareXFiles([XFile(file.path)],
+        text: '${book.title} - 墨匣');
   }
 }

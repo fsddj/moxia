@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../database/dao/chapter_dao.dart';
 import '../models/chapter.dart';
 import '../widgets/editor_stats_bar.dart';
