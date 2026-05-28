@@ -90,11 +90,6 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
-  Future<bool> _onWillPop() async {
-    if (_isDirty) await _saveNow();
-    return true;
-  }
-
   void _showEditorMenu() {
     showModalBottomSheet(
       context: context,
@@ -193,7 +188,7 @@ class _EditorScreenState extends State<EditorScreen> {
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
         if (_isDirty) await _saveNow();
-        if (context.mounted) Navigator.of(context).pop(true);
+        if (mounted) Navigator.of(context).pop(true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -202,7 +197,7 @@ class _EditorScreenState extends State<EditorScreen> {
             tooltip: '完成',
             onPressed: () async {
               if (_isDirty) await _saveNow();
-              if (context.mounted) Navigator.of(context).pop(true);
+              if (mounted) Navigator.of(context).pop(true);
             },
           ),
           title: TextField(
