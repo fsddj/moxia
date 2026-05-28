@@ -12,11 +12,18 @@ class ExportService {
   final SectionDao _sectionDao = SectionDao();
   final ChapterDao _chapterDao = ChapterDao();
 
+  Future<Directory> get _exportDir async {
+    final dir = Directory(
+        '${(await getApplicationDocumentsDirectory()).path}/exports');
+    if (!await dir.exists()) await dir.create();
+    return dir;
+  }
+
   Future<void> exportChapter(Chapter chapter, BuildContext context) async {
-    final dir = (await getApplicationDocumentsDirectory()).path;
+    final dir = await _exportDir;
     final safeName =
         chapter.title.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_');
-    final file = File('$dir/$safeName.txt');
+    final file = File('${dir.path}/$safeName.txt');
 
     final buffer = StringBuffer();
     buffer.writeln(chapter.title);
@@ -26,14 +33,15 @@ class ExportService {
 
     await Share.shareXFiles([XFile(file.path)],
         text: '${chapter.title} - 墨匣');
+    try { await file.delete(); } catch (_) {}
   }
 
   Future<void> exportSection(
       Section section, List<Chapter> chapters, BuildContext context) async {
-    final dir = (await getApplicationDocumentsDirectory()).path;
+    final dir = await _exportDir;
     final safeName =
         section.title.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_');
-    final file = File('$dir/$safeName.txt');
+    final file = File('${dir.path}/$safeName.txt');
 
     final buffer = StringBuffer();
     buffer.writeln('【${section.title}】');
@@ -52,13 +60,14 @@ class ExportService {
 
     await Share.shareXFiles([XFile(file.path)],
         text: '${section.title} - 墨匣');
+    try { await file.delete(); } catch (_) {}
   }
 
   Future<void> exportBook(Book book, BuildContext context) async {
-    final dir = (await getApplicationDocumentsDirectory()).path;
+    final dir = await _exportDir;
     final safeName =
         book.title.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_');
-    final file = File('$dir/$safeName.txt');
+    final file = File('${dir.path}/$safeName.txt');
 
     final buffer = StringBuffer();
     buffer.writeln(book.title);
@@ -90,5 +99,6 @@ class ExportService {
 
     await Share.shareXFiles([XFile(file.path)],
         text: '${book.title} - 墨匣');
+    try { await file.delete(); } catch (_) {}
   }
 }
