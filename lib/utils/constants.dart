@@ -24,7 +24,7 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: Color(0xFFE0E0E0)),
+          side: const BorderSide(color: Color(0xFFE0E0E0)),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(

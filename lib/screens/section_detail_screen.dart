@@ -129,10 +129,6 @@ class _SectionDetailScreenState extends State<SectionDetailScreen> {
     }
   }
 
-  Future<void> _exportChapter(Chapter chapter) async {
-    await ExportService().exportChapter(chapter, context);
-  }
-
   Future<void> _exportSection() async {
     await ExportService().exportSection(_section, _chapters, context);
   }

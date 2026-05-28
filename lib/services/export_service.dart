@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../database/dao/book_dao.dart';
 import '../database/dao/section_dao.dart';
 import '../database/dao/chapter_dao.dart';
 import '../models/book.dart';
@@ -10,7 +9,6 @@ import '../models/section.dart';
 import '../models/chapter.dart';
 
 class ExportService {
-  final BookDao _bookDao = BookDao();
   final SectionDao _sectionDao = SectionDao();
   final ChapterDao _chapterDao = ChapterDao();
 
