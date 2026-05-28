@@ -10,13 +10,6 @@ class BookDao {
     return maps.map((m) => Book.fromMap(m)).toList();
   }
 
-  Future<List<Book>> getActive() async {
-    final db = await _db.database;
-    final maps = await db.query('books',
-        where: 'status = ?', whereArgs: ['active'], orderBy: 'sort_order ASC');
-    return maps.map((m) => Book.fromMap(m)).toList();
-  }
-
   Future<Book?> getById(int id) async {
     final db = await _db.database;
     final maps = await db.query('books', where: 'id = ?', whereArgs: [id]);
@@ -38,6 +31,14 @@ class BookDao {
   Future<int> delete(int id) async {
     final db = await _db.database;
     return await db.delete('books', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> updateLastChapterId(int bookId, int chapterId) async {
+    final db = await _db.database;
+    await db.update('books', {
+      'last_chapter_id': chapterId,
+      'updated_at': DateTime.now().toIso8601String(),
+    }, where: 'id = ?', whereArgs: [bookId]);
   }
 
   Future<void> reorder(List<int> ids) async {

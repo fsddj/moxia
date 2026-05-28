@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 class AppConstants {
   static const String appName = '墨匣';
   static const String dbName = 'mo_xia.db';
-  static const int dbVersion = 1;
 }
 
+const _seedColor = Color(0xFF6750A4);
+
 class AppTheme {
-  static ThemeData get lightTheme {
+  static ThemeData get lightTheme => _buildTheme(Brightness.light);
+  static ThemeData get darkTheme => _buildTheme(Brightness.dark);
+
+  static ThemeData _buildTheme(Brightness brightness) {
     return ThemeData(
       useMaterial3: true,
-      colorSchemeSeed: const Color(0xFF6750A4),
-      brightness: Brightness.light,
+      colorSchemeSeed: _seedColor,
+      brightness: brightness,
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         scrolledUnderElevation: 1,
@@ -24,7 +28,10 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: Color(0xFFE0E0E0)),
+          side: BorderSide(
+              color: brightness == Brightness.light
+                  ? const Color(0xFFE0E0E0)
+                  : const Color(0xFF3A3A3A)),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -32,4 +39,29 @@ class AppTheme {
       ),
     );
   }
+
+  // KaiTi typography
+  static const String _kaitiFamily = 'KaiTi';
+  static const List<String> _kaitiFallback = [
+    'STKaiti',
+    '楷体',
+    'Noto Serif CJK SC',
+    'serif',
+  ];
+
+  static TextStyle get editorContentStyle => const TextStyle(
+        fontFamily: _kaitiFamily,
+        fontFamilyFallback: _kaitiFallback,
+        fontSize: 18,
+        height: 1.8,
+        letterSpacing: 0.5,
+      );
+
+  static TextStyle get editorTitleStyle => const TextStyle(
+        fontFamily: _kaitiFamily,
+        fontFamilyFallback: _kaitiFallback,
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        height: 1.4,
+      );
 }

@@ -4,8 +4,9 @@ class Book {
   final String author;
   final String description;
   final int coverColor;
+  final String? coverImage;
+  final int? lastChapterId;
   final int wordCount;
-  final String status;
   final String createdAt;
   final String updatedAt;
   final int sortOrder;
@@ -16,8 +17,9 @@ class Book {
     this.author = '',
     this.description = '',
     this.coverColor = 0xFFEADDFF,
+    this.coverImage,
+    this.lastChapterId,
     this.wordCount = 0,
-    this.status = 'active',
     required this.createdAt,
     required this.updatedAt,
     this.sortOrder = 0,
@@ -29,8 +31,9 @@ class Book {
     String? author,
     String? description,
     int? coverColor,
+    String? coverImage,
+    int? lastChapterId,
     int? wordCount,
-    String? status,
     String? createdAt,
     String? updatedAt,
     int? sortOrder,
@@ -41,8 +44,9 @@ class Book {
       author: author ?? this.author,
       description: description ?? this.description,
       coverColor: coverColor ?? this.coverColor,
+      coverImage: coverImage ?? this.coverImage,
+      lastChapterId: lastChapterId ?? this.lastChapterId,
       wordCount: wordCount ?? this.wordCount,
-      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       sortOrder: sortOrder ?? this.sortOrder,
@@ -55,8 +59,9 @@ class Book {
       'author': author,
       'description': description,
       'cover_color': coverColor,
+      'cover_image': coverImage,
+      'last_chapter_id': lastChapterId,
       'word_count': wordCount,
-      'status': status,
       'created_at': createdAt,
       'updated_at': updatedAt,
       'sort_order': sortOrder,
@@ -72,8 +77,9 @@ class Book {
       author: map['author'] as String? ?? '',
       description: map['description'] as String? ?? '',
       coverColor: map['cover_color'] as int? ?? 0xFFEADDFF,
+      coverImage: map['cover_image'] as String?,
+      lastChapterId: map['last_chapter_id'] as int?,
       wordCount: map['word_count'] as int? ?? 0,
-      status: map['status'] as String? ?? 'active',
       createdAt: map['created_at'] as String,
       updatedAt: map['updated_at'] as String,
       sortOrder: map['sort_order'] as int? ?? 0,

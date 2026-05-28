@@ -20,8 +20,9 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 3,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
       },
@@ -84,5 +85,40 @@ class DatabaseHelper {
     await db.execute('''
       CREATE INDEX idx_chapters_section ON chapters(section_id, sort_order)
     ''');
+
+    await db.execute('''
+      CREATE TABLE settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+    ''');
   }
-}
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE books ADD COLUMN cover_image TEXT');
+      await db.execute('ALTER TABLE books ADD COLUMN last_chapter_id INTEGER');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS settings (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL
+        )
+      ''');
+    }
+  }
+
+  Future<String?> getSetting(String key) async {
+    final db = await database;
+    final maps = await db.query('settings', where: 'key = ?', whereArgs: [key]);
+    if (maps.isEmpty) return null;
+    return maps.first['value'] as String;
+  }
+
+  Future<void> setSetting(String key, String value) async {
+    final db = await database;
+    await db.rawInsert(
+        'INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',
+        [key, value]);
+  }
