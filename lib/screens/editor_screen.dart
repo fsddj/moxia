@@ -187,8 +187,10 @@ class _EditorScreenState extends State<EditorScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
+        final navigator = Navigator.of(context);
         if (_isDirty) await _saveNow();
-        if (mounted) Navigator.of(context).pop(true);
+        if (!mounted) return;
+        navigator.pop(true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -196,8 +198,10 @@ class _EditorScreenState extends State<EditorScreen> {
             icon: const Icon(Icons.check),
             tooltip: '完成',
             onPressed: () async {
+              final navigator = Navigator.of(context);
               if (_isDirty) await _saveNow();
-              if (mounted) Navigator.of(context).pop(true);
+              if (!mounted) return;
+              navigator.pop(true);
             },
           ),
           title: TextField(
