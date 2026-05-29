@@ -31,8 +31,8 @@ jobs:
         run: flutter analyze
         continue-on-error: true
 
-      - name: Build APK (split per ABI)
-        run: flutter build apk --release --split-per-abi
+      - name: Build APK (arm64 only)
+        run: flutter build apk --release --target-platform android-arm64
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4

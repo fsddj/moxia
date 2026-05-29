@@ -20,7 +20,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
       onConfigure: (db) async {
@@ -37,6 +37,8 @@ class DatabaseHelper {
         author TEXT NOT NULL DEFAULT '',
         description TEXT NOT NULL DEFAULT '',
         cover_color INTEGER NOT NULL DEFAULT 4294426104,
+        cover_image TEXT,
+        last_chapter_id INTEGER,
         word_count INTEGER NOT NULL DEFAULT 0,
         status TEXT NOT NULL DEFAULT 'active',
         created_at TEXT NOT NULL,
@@ -99,13 +101,19 @@ class DatabaseHelper {
       await db.execute('ALTER TABLE books ADD COLUMN cover_image TEXT');
       await db.execute('ALTER TABLE books ADD COLUMN last_chapter_id INTEGER');
     }
-    if (oldVersion < 3) {
-      await db.execute('''
-        CREATE TABLE IF NOT EXISTS settings (
-          key TEXT PRIMARY KEY,
-          value TEXT NOT NULL
-        )
-      ''');
+    if (oldVersion < 4) {
+      final columns =
+          (await db.rawQuery("PRAGMA table_info('books')"))
+              .map((c) => c['name'] as String)
+              .toList();
+      if (!columns.contains('cover_image')) {
+        await db.execute(
+            'ALTER TABLE books ADD COLUMN cover_image TEXT');
+      }
+      if (!columns.contains('last_chapter_id')) {
+        await db.execute(
+            'ALTER TABLE books ADD COLUMN last_chapter_id INTEGER');
+      }
     }
   }
 
