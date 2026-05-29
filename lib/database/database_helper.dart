@@ -122,3 +122,4 @@ class DatabaseHelper {
         'INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',
         [key, value]);
   }
+}
